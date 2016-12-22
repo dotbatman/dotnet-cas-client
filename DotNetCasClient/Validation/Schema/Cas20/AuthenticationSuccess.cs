@@ -23,6 +23,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace DotNetCasClient.Validation.Schema.Cas20
 {
@@ -51,6 +52,13 @@ namespace DotNetCasClient.Validation.Schema.Cas20
         [XmlArray("proxies")]
         [XmlArrayItem("proxy", IsNullable = false)]
         public string[] Proxies
+        {
+            get;
+            set;
+        }
+
+        [XmlElement("attribute")]
+        public List<Attribute> Attributes
         {
             get;
             set;

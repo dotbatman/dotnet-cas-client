@@ -19,9 +19,11 @@
 
 using System;
 using System.Web;
+using System.Collections.Generic;
 using DotNetCasClient.Security;
 using DotNetCasClient.Utils;
 using DotNetCasClient.Validation.Schema.Cas20;
+using System.Linq;
 
 namespace DotNetCasClient.Validation.TicketValidator
 {
@@ -125,11 +127,11 @@ namespace DotNetCasClient.Validation.TicketValidator
 
                 if (authSuccessResponse.Proxies != null && authSuccessResponse.Proxies.Length > 0)
                 {
-                    return new CasPrincipal(new Assertion(authSuccessResponse.User), proxyGrantingTicketIou, authSuccessResponse.Proxies);
+                    return new CasPrincipal(new Assertion(authSuccessResponse.User, authSuccessResponse.Attributes.GroupBy(k => k.Name, v => v.Value).ToDictionary(g => g.Key, g => (IList<string>)g.ToList())), proxyGrantingTicketIou, authSuccessResponse.Proxies);
                 } 
                 else
                 {
-                    return new CasPrincipal(new Assertion(authSuccessResponse.User), proxyGrantingTicketIou);
+                    return new CasPrincipal(new Assertion(authSuccessResponse.User, authSuccessResponse.Attributes.GroupBy(k => k.Name, v => v.Value).ToDictionary(g => g.Key, g => (IList<string>)g.ToList())), proxyGrantingTicketIou);
                 }
             }
             
